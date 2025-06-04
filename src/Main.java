@@ -1,12 +1,21 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+
+import com.localride.model.Driver;
+import com.localride.model.Passenger;
+import com.localride.model.Ride;
+import com.localride.service.DriverManager;
+import com.localride.service.PassengerManager;
+import com.localride.service.RideManager;
+import java.util.concurrent.ThreadLocalRandom;
+
 public class Main {
     //Enum version
     public enum Version {
         V0("First run: Just a hello message"),
         V1("Added Passenger and Driver classes"),
         V2("Added constructor to Driver and Passenger"),
-        V3("Ride class added and ride starts/ends");
+        V3("Ride class added and ride starts/ends"),
+        V4("Ride class added and ride cancel"),
+        V5("Clarify services and manage all models");
 
         private final String description;
 
@@ -80,17 +89,91 @@ public class Main {
         ride.endRide();
     }
 
+    /**
+     * Generation 05
+     * add Passenger class
+     * add driver class
+     * acceptRide in driver usable
+     * add multiple constructor
+     */
+    private static void fifthGenerationMethod(){
+        Passenger passenger = new Passenger("Ali");
+        Driver driver= new Driver("Reza");
+
+        passenger.requestRide();
+        driver.acceptRide();
+
+        Ride ride=new Ride(passenger, driver);
+        ride.startRide();
+        try {
+            Thread.sleep(3000); // 3 seconds
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        ride.cancelRide();
+        ride.endRide();
+        System.out.println("Final Ride Status: " + ride.getStatus());
+    }
+
+    /**
+     * Generation 06
+     * add RideManager class
+     * add driver class
+     * acceptRide in driver usable
+     * add multiple constructor
+     */
+    private static void sixthGenerationMethod(){
+        Passenger passenger = new Passenger("Ali");
+        Driver driver= new Driver("Reza");
+        DriverManager driverManager =  new DriverManager();
+        driverManager.addDriver(driver);
+        PassengerManager passengerManager =new PassengerManager();
+        passengerManager.addPassenger(passenger);
+
+        RideManager rideManager = new RideManager();
+        Ride ride = rideManager.createRide(passenger, driver);
+
+        rideManager.acceptRide(ride);
+        rideManager.startRide(ride);
+
+        try {
+            int seconds = ThreadLocalRandom.current().nextInt(1, 6); // عدد بین 1 تا 5 ثانیه
+            Thread.sleep(seconds * 1000L);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        rideManager.endRide(ride);
+        System.out.println("Final Ride Status: " + ride.getStatus());
+    }
+
     public static void main(String[] args) {
 
-        Version selectedVersion = Version.V3;
+        Version selectedVersion = Version.V5;
 
         System.out.println("Running version: " + selectedVersion + " - " + selectedVersion.getDescription());
 
         switch (selectedVersion) {
-            case V0 -> firstGenerationMethod();
-            case V1 -> secondGenerationMethod();
-            case V2 -> thirdGenerationMethod();
-            case V3 -> forthGenerationMethod();
+            case V0 :
+                firstGenerationMethod();
+                break;
+            case V1 :
+                secondGenerationMethod();
+                break;
+            case V2 :
+                thirdGenerationMethod();
+                break;
+            case V3 :
+                forthGenerationMethod();
+                break;
+            case V4 :
+                fifthGenerationMethod();
+                break;
+            case V5 :
+                sixthGenerationMethod();
+                break;
+            default :
+                throw new IllegalStateException("Unexpected value: " + selectedVersion);
         }
     }
 }
