@@ -1,0 +1,27 @@
+name: Maven CI
+
+on:
+  push:
+    branches: [ main, master ] # This workflow runs whenever a push is made to the 'main' or 'master' branches.
+  pull_request:
+    branches: [ main, master ] # This workflow also runs when a pull request is opened against 'main' or 'master'.
+
+jobs:
+  build:
+    runs-on: ubuntu-latest # The job will execute on a fresh Ubuntu virtual machine.
+
+    steps:
+      - uses: actions/checkout@v4 # This action checks out your repository code into the VM.
+      - name: Set up JDK 24 # Sets up the Java Development Kit environment.
+        uses: actions/setup-java@v4
+        with:
+          java-version: '24' # Specify your Java version here. Ensure it matches your project's requirement.
+          distribution: 'temurin' # Choose a JDK distribution (e.g., Temurin, Oracle, Adopt).
+          cache: maven # Caches Maven dependencies to speed up future builds.
+
+      - name: Build with Maven # Executes the Maven build and test command.
+        run: mvn -B package --file pom.xml
+        # Command explanation:
+        # mvn -B: Runs Maven in batch mode (non-interactive).
+        # package: Compiles, tests, and packages your code (e.g., create a JAR file).
+        # --file pom.xml: Specify the pom.xml file to use for the build.

@@ -1,7 +1,10 @@
 
+
+import com.localride.console.AppConsole;
 import com.localride.model.Driver;
 import com.localride.model.Passenger;
 import com.localride.model.Ride;
+import com.localride.model.enums.CancelRole;
 import com.localride.service.DriverManager;
 import com.localride.service.PassengerManager;
 import com.localride.service.RideManager;
@@ -15,7 +18,8 @@ public class Main {
         V2("Added constructor to Driver and Passenger"),
         V3("Ride class added and ride starts/ends"),
         V4("Ride class added and ride cancel"),
-        V5("Clarify services and manage all models");
+        V5("Clarify services and manage all models"),
+        V6("Make interactive console menu");
 
         private final String description;
 
@@ -105,12 +109,13 @@ public class Main {
 
         Ride ride=new Ride(passenger, driver);
         ride.startRide();
+        // TODO: Replace printStackTrace with proper logging
         try {
             Thread.sleep(3000); // 3 seconds
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        ride.cancelRide();
+        ride.cancelRide(CancelRole.SYSTEM);
         ride.endRide();
         System.out.println("Final Ride Status: " + ride.getStatus());
     }
@@ -135,7 +140,7 @@ public class Main {
 
         rideManager.acceptRide(ride);
         rideManager.startRide(ride);
-
+        // TODO: Replace printStackTrace with proper logging
         try {
             int seconds = ThreadLocalRandom.current().nextInt(1, 6); // عدد بین 1 تا 5 ثانیه
             Thread.sleep(seconds * 1000L);
@@ -147,9 +152,17 @@ public class Main {
         System.out.println("Final Ride Status: " + ride.getStatus());
     }
 
+    /**
+     * Generation 07
+     * add Interactive Console Menu
+     */
+    private static void seventhGenerationMethod(){
+        new AppConsole().run();
+    }
+
     public static void main(String[] args) {
 
-        Version selectedVersion = Version.V5;
+        Version selectedVersion = Version.V6;
 
         System.out.println("Running version: " + selectedVersion + " - " + selectedVersion.getDescription());
 
@@ -171,6 +184,9 @@ public class Main {
                 break;
             case V5 :
                 sixthGenerationMethod();
+                break;
+            case V6:
+                seventhGenerationMethod();
                 break;
             default :
                 throw new IllegalStateException("Unexpected value: " + selectedVersion);
