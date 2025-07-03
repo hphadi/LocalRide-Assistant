@@ -21,6 +21,7 @@ jobs:
 
       - name: Build with Maven # Executes the Maven build and test command.
         run: mvn -B package --file pom.xml
+        working-directory: .
         # Command explanation:
         # mvn -B: Runs Maven in batch mode (non-interactive).
         # package: Compiles, tests, and packages your code (e.g., create a JAR file).
