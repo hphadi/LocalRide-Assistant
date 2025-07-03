@@ -6,8 +6,16 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="src" />
+      </profile>
+      <profile name="Annotation profile for LocalRideAssistant" enabled="true">
+        <sourceOutputDir name="src/target/generated-sources/annotations" />
+        <sourceTestOutputDir name="src/target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="LocalRideAssistant" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="src" target="24" />
+    </bytecodeTargetLevel>
   </component>
 </project>
