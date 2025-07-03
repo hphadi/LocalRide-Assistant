@@ -41,5 +41,5 @@ Follow these steps to get the console-based project up and running on your local
 Open your terminal or Git Bash and run the following command:
 
 ```bash
-git clone [https://github.com/hphadi/LocalRideAssistant.git](https://github.com/hphadi/LocalRideAssistant.git)
+git clone https://github.com/hphadi/LocalRideAssistant.git
 cd LocalRideAssistant
