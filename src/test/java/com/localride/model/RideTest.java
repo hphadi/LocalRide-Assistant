@@ -137,9 +137,7 @@ public class RideTest {
         assertEquals(CancelRole.PASSENGER, ride.cancelRole, "Cancel role should be PASSENGER.");
         assertTrue(outContent.toString().contains("Ride with id " + ride.getId() + " has been cancelled ❌"), "Console output should confirm cancellation.");
         assertEquals(PassengerStatus.NOTREQUESTED, testPassenger.getStatus(), "Passenger status should revert to NOTREQUESTED after cancellation from REQUESTED.");
-        // --- تغییرات اینجا اعمال شده ---
         assertEquals(DriverStatus.AVAILABLE, testDriver.getStatus(), "Driver status should not change from its initial constructor state if never accepted"); // تغییر از DRIVING به AVAILABLE
-        // --- پایان تغییرات ---
     }
 
     @Test
