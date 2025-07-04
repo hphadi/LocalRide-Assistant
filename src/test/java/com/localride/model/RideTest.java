@@ -48,9 +48,11 @@ public class RideTest {
         assertNotEquals(0, ride.getId(), "Ride ID should be assigned and not 0.");
         assertEquals(testPassenger, ride.getPassenger(), "The passenger object should be correctly linked.");
         assertEquals(testDriver, ride.getDriver(), "The driver object should be correctly linked.");
-        //assertEquals(RideStatus.IN_PROGRESS, ride.getStatus(), "Initial ride status should be IN_PROGRESS."); // Based on your constructor
-        //assertEquals(PassengerStatus.INRIDE, testPassenger.getStatus(), "Passenger status should be INRIDE after ride creation.");
-        //assertEquals(DriverStatus.DRIVING, testDriver.getStatus(), "Driver status should be DRIVING after ride creation.");
+        // --- تغییرات اینجا اعمال شده ---
+        assertEquals(RideStatus.PENDING, ride.getStatus(), "Initial ride status should be PENDING."); // تغییر از IN_PROGRESS به PENDING
+        // --- پایان تغییرات ---
+        // assertEquals(PassengerStatus.INRIDE, testPassenger.getStatus(), "Passenger status should be INRIDE after ride creation."); // این خط کامنت شده بود، پس تغییر نمیدیم
+        // assertEquals(DriverStatus.DRIVING, testDriver.getStatus(), "Driver status should be DRIVING after ride creation."); // این خط کامنت شده بود، پس تغییر نمیدیم
         assertFalse(ride.isRideActive(), "Ride should not be active immediately after creation in constructor.");
     }
 
@@ -135,8 +137,9 @@ public class RideTest {
         assertEquals(CancelRole.PASSENGER, ride.cancelRole, "Cancel role should be PASSENGER.");
         assertTrue(outContent.toString().contains("Ride with id " + ride.getId() + " has been cancelled ❌"), "Console output should confirm cancellation.");
         assertEquals(PassengerStatus.NOTREQUESTED, testPassenger.getStatus(), "Passenger status should revert to NOTREQUESTED after cancellation from REQUESTED.");
-        // Driver status might remain AVAILABLE if never moved from that state
-        //assertEquals(DriverStatus.DRIVING, testDriver.getStatus(), "Driver status should not change from its initial constructor state if never accepted"); // No change if never accepted
+        // --- تغییرات اینجا اعمال شده ---
+        assertEquals(DriverStatus.AVAILABLE, testDriver.getStatus(), "Driver status should not change from its initial constructor state if never accepted"); // تغییر از DRIVING به AVAILABLE
+        // --- پایان تغییرات ---
     }
 
     @Test
