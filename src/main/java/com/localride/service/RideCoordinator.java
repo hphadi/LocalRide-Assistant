@@ -5,6 +5,8 @@ package com.localride.service;
 import com.localride.model.Driver;
 import com.localride.model.Passenger;
 import com.localride.model.Ride;
+import com.localride.util.LanguageManager;
+
 // TODO: Remove unused Class RideCoordinator if not needed
 public class RideCoordinator {
     private final RideManager rideManager;
@@ -16,8 +18,9 @@ public class RideCoordinator {
 
     // TODO: Remove unused method coordinatrRide if not needed
     public Ride coordinatrRide(Passenger passenger, Driver driver){
-        System.out.println("Coordinate ride between passenger " + passenger.getName() +
-                " and driver " + driver.getName());
+        //System.out.println("Coordinate ride between passenger " + passenger.getName() +
+        //        " and driver " + driver.getName());
+        System.out.println(LanguageManager.get("coordinateRide",passenger.getName(),driver.getName()));
         Ride ride = new Ride(passenger, driver) ;
         ride.startRide();
         rideManager.getAllRides().add(ride) ;

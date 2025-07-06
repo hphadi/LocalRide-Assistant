@@ -8,6 +8,10 @@ import com.localride.model.enums.CancelRole;
 import com.localride.service.DriverManager;
 import com.localride.service.PassengerManager;
 import com.localride.service.RideManager;
+import com.localride.util.LanguageManager;
+
+import java.util.ResourceBundle;
+import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Main {
@@ -19,7 +23,8 @@ public class Main {
         V3("Ride class added and ride starts/ends"),
         V4("Ride class added and ride cancel"),
         V5("Clarify services and manage all models"),
-        V6("Make interactive console menu");
+        V6("Make interactive console menu"),
+        V7("Add language support");
 
         private final String description;
 
@@ -159,10 +164,15 @@ public class Main {
     private static void seventhGenerationMethod(){
         new AppConsole().run();
     }
-
+    private static void eighthGenerationMethod() {
+        Scanner scanner = new Scanner(System.in);
+        ResourceBundle bundle = LanguageManager.init(scanner);
+        System.out.println(bundle.getString("welcome"));
+        new AppConsole().run();
+    }
     public static void main(String[] args) {
 
-        Version selectedVersion = Version.V6;
+        Version selectedVersion = Version.V7; // Change this to select a different version
 
         System.out.println("Running version: " + selectedVersion + " - " + selectedVersion.getDescription());
 
@@ -188,8 +198,13 @@ public class Main {
             case V6:
                 seventhGenerationMethod();
                 break;
+            case V7:
+                eighthGenerationMethod();
             default :
                 throw new IllegalStateException("Unexpected value: " + selectedVersion);
         }
     }
+
+
+
 }

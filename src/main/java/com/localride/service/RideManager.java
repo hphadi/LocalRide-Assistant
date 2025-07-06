@@ -7,6 +7,7 @@ import com.localride.model.enums.DriverStatus;
 import com.localride.model.enums.PassengerStatus;
 import com.localride.model.enums.RideStatus;
 import com.localride.model.filter.RideFilter;
+import com.localride.util.LanguageManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -46,11 +47,13 @@ public class RideManager {
      */
     public Ride createRide(Passenger passenger, Driver driver) {
         if (passenger.getStatus() != PassengerStatus.REQUESTED) {
-            System.out.println("❗ Passenger " + passenger.getName() + " is not in REQUESTED status.");
+            //System.out.println("❗ Passenger " + passenger.getName() + " is not in REQUESTED status.");
+            System.out.println(LanguageManager.get("passengerNotRequested",passenger.getName()));
             return null; // either return null or throw an exception
         }
         if (driver.getStatus() != DriverStatus.AVAILABLE) {
-            System.out.println("❗ Driver " + driver.getName() + " is not in AVAILABLE status.");
+            //System.out.println("❗ Driver " + driver.getName() + " is not in AVAILABLE status.");
+            System.out.println(LanguageManager.get("driverNotAvailableStatus", driver.getName()));
             return null; // either return null or throw an exception
         }
         Ride ride = new Ride(passenger, driver);
@@ -59,8 +62,9 @@ public class RideManager {
         driver.setStatus(DriverStatus.ASSIGNED);
 
         rides.add(ride);
-        System.out.println("✅ Ride " + ride.getId() + " created for Passenger " + passenger.getName() +
-                " and Driver " + driver.getName() + ". Status: " + ride.getStatus());
+        //System.out.println("✅ Ride " + ride.getId() + " created for Passenger " + passenger.getName() +
+        //        " and Driver " + driver.getName() + ". Status: " + ride.getStatus());
+        System.out.println(LanguageManager.get("rideCreatedSuccess", ride.getId(), passenger.getName(), driver.getName(), ride.getStatus()));
 
         return ride;
     }
@@ -72,18 +76,21 @@ public class RideManager {
      */
     public void endRide(Ride ride) {
         if (ride == null) {
-            System.out.println("❗ Cannot end a null ride.");
+            //System.out.println("❗ Cannot end a null ride.");
+            System.out.println(LanguageManager.get("cannotEndNullRide"));
             return;
         }
         if (ride.getStatus() == RideStatus.IN_PROGRESS) {
         	ride.endRide();
             ride.getPassenger().setStatus(PassengerStatus.NOTREQUESTED);
             ride.getDriver().setStatus(DriverStatus.AVAILABLE);
-            System.out.println("🏁 Ride " + ride.getId() + " completed! " + ride.getPassenger().getName() +
-                    " arrived. 🎉 Status: " + ride.getStatus());
+            //System.out.println("🏁 Ride " + ride.getId() + " completed! " + ride.getPassenger().getName() +
+            //        " arrived. 🎉 Status: " + ride.getStatus());
+            System.out.println(LanguageManager.get("rideCompleted", ride.getId(), ride.getPassenger().getName(), ride.getStatus()));
         } else {
-            System.out.println("❗ Cannot end ride " + ride.getId() + ". Current status: " + ride.getStatus() +
-                    ". Must be IN_PROGRESS.");
+            //System.out.println("❗ Cannot end ride " + ride.getId() + ". Current status: " + ride.getStatus() +
+            //        ". Must be IN_PROGRESS.");
+            System.out.println(LanguageManager.get("cannotEndRide", ride.getId(), ride.getStatus()));
         }
     }
 
@@ -95,14 +102,17 @@ public class RideManager {
      */
     public void acceptRide(Ride ride) {
         if (ride == null) {
-            System.out.println("❗ Cannot accept a null ride.");
+            //System.out.println("❗ Cannot accept a null ride.");
+            System.out.println(LanguageManager.get("cannotAcceptNullRide"));
             return;
         }
         if ((ride.getStatus() == RideStatus.REQUESTED) || (ride.getStatus()==RideStatus.PENDING)) {
             ride.setStatus(RideStatus.ACCEPTED);
-            System.out.println("✅ Ride accepted for " + ride.getPassenger().getName());
+            //System.out.println("✅ Ride accepted for " + ride.getPassenger().getName());
+            System.out.println(LanguageManager.get("rideAccepted", ride.getPassenger().getName()));
         } else {
-            System.out.println("❗ Cannot accept ride. Current status: " + ride.getStatus());
+            //System.out.println("❗ Cannot accept ride. Current status: " + ride.getStatus());
+            System.out.println(LanguageManager.get("cannotAcceptRideStatus", ride.getStatus().toString()));
         }
     }
     /**
@@ -114,16 +124,20 @@ public class RideManager {
 
     public void startRide(Ride ride) {
         if (ride == null) {
-            System.out.println("❗ Cannot start a null ride.");
+            //System.out.println("❗ Cannot start a null ride.");
+            System.out.println(LanguageManager.get("cannotStartNullRide"));
             return;
         }
         if (ride.getStatus() == RideStatus.ACCEPTED) {
             ride.startRide();
-            System.out.println("▶️ Ride " + ride.getId() + " started! " + ride.getDriver().getName() +
-                    " is driving " + ride.getPassenger().getName() + ". Status: " + ride.getStatus());
+            //System.out.println("▶️ Ride " + ride.getId() + " started! " + ride.getDriver().getName() +
+            //        " is driving " + ride.getPassenger().getName() + ". Status: " + ride.getStatus());
+            System.out.println(LanguageManager.get("rideStarted", ride.getId(),
+                    ride.getDriver().getName(), ride.getPassenger().getName(), ride.getStatus()));
         } else {
-            System.out.println("❗ Ride " + ride.getId() + " must be ACCEPTED before starting. Current status: " +
-                    ride.getStatus());
+            //System.out.println("❗ Ride " + ride.getId() + " must be ACCEPTED before starting. Current status: " +
+            //        ride.getStatus());
+            System.out.println(LanguageManager.get("rideMustBeAccepted", ride.getId(), ride.getStatus()));
         }
     }
 
@@ -232,7 +246,8 @@ public class RideManager {
     public void cancelRide(Ride ride, String cancelledBy) {
         if (ride == null || ride.getStatus() == RideStatus.CANCELLED || ride.getStatus() == RideStatus.COMPLETED
                 || ride.getStatus() == RideStatus.IN_PROGRESS) {
-            System.out.println("⚠️ Cannot cancel ride. It's already completed or cancelled.");
+            //System.out.println("⚠️ Cannot cancel ride. It's already completed or cancelled.");
+            System.out.println(LanguageManager.get("cannotCancelRideFinal"));
             return;
         }
 
@@ -241,7 +256,8 @@ public class RideManager {
         ride.getPassenger().setStatus(PassengerStatus.NOTREQUESTED);
         ride.getDriver().setStatus(DriverStatus.AVAILABLE);
 
-        System.out.println("❌ Ride " + ride.getId() + " cancelled by " + cancelledBy);
+        //System.out.println("❌ Ride " + ride.getId() + " cancelled by " + cancelledBy);
+        System.out.println(LanguageManager.get("rideCancelledBy", ride.getId(), cancelledBy));
     }
 
     /**

@@ -16,6 +16,7 @@
 package com.localride.model;
 
 import com.localride.model.enums.*;
+import com.localride.util.LanguageManager;
 
 /**
  * Represents a driver in the ride-hailing system.
@@ -52,7 +53,7 @@ public class Driver {
      */
     public Driver(String name) {
         this.name = name;
-        this.carModel = "Unknown"; // default value
+        this.carModel = LanguageManager.get("unknown"); // default value
         this.id = idCounter;
         this.status = DriverStatus.AVAILABLE;
         this.rate = 0;
@@ -64,10 +65,12 @@ public class Driver {
      */
     public void acceptRide() {
         if (this.status != DriverStatus.AVAILABLE) {
-            System.out.println("Driver " + name + " with id : " + id + " is not available now;");
+            //System.out.println("Driver " + name + " with id : " + id + " is not available now;");
+            System.out.println(LanguageManager.get("driverNotAvailable", name, id));
             return;
         }
-        System.out.println(name + " with car " + carModel + " and id: " + id + " accepted the Ride");
+        //System.out.println(name + " with car " + carModel + " and id: " + id + " accepted the Ride");
+        System.out.println(LanguageManager.get("driverAcceptedRide", name, carModel, id));
     }
 
     /**
@@ -77,10 +80,12 @@ public class Driver {
      */
     public void acceptRide(Passenger passenger) {
         if (this.status != DriverStatus.AVAILABLE) {
-            System.out.println("Driver " + name + " with id : " + id + " is not available now;");
+            //System.out.println("Driver " + name + " with id : " + id + " is not available now;");
+            System.out.println(LanguageManager.get("driverNotAvailable", name, id));
             return;
         }
-        System.out.println(name + " accepted the ride for " + passenger.getName());
+        //System.out.println(name + " accepted the ride for " + passenger.getName());
+        System.out.println(LanguageManager.get("driverAcceptedRideSimple", this.name, passenger.getName()));
     }
 
     /**
@@ -91,11 +96,13 @@ public class Driver {
      */
     public void acceptRide(Ride ride) {
         if (ride.getStatus() != RideStatus.REQUESTED) {
-            System.out.println("❗ Cannot accept ride. Current status: " + ride.getStatus());
+            //System.out.println("❗ Cannot accept ride. Current status: " + ride.getStatus());
+            System.out.println(LanguageManager.get("cannotAcceptRideStatus", ride.getStatus()));
             return;
         }
 
-        System.out.println(this.name + " accepted the ride for " + ride.getPassenger().getName());
+        //System.out.println(this.name + " accepted the ride for " + ride.getPassenger().getName());
+        System.out.println(LanguageManager.get("rideAcceptedBy", this.name, ride.getPassenger().getName()));
         ride.setStatus(RideStatus.ACCEPTED);
     }
 
@@ -122,7 +129,8 @@ public class Driver {
     }
 
     public void cancelRide(){
-        System.out.println(name + " ride Cancel.");
+        //System.out.println(name + " ride Cancel.");
+        System.out.println(LanguageManager.get("rideCancelled", name));
 
     }
 

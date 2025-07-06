@@ -16,6 +16,8 @@
 package com.localride.model;
 
 import com.localride.model.enums.*;
+import com.localride.util.LanguageManager;
+import org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService;
 
 /**
  * Represents a ride between a passenger and a driver.
@@ -61,10 +63,13 @@ public class Ride {
             status = RideStatus.IN_PROGRESS;
             passenger.status=PassengerStatus.INRIDE;
             driver.status=DriverStatus.DRIVING;
-            System.out.println("🚗 Starting ride for " + passenger.name + " with driver " + driver.name +
-                    " in " + driver.carModel + " ride status : " + status);
+            //System.out.println("🚗 Starting ride for " + passenger.name + " with driver " + driver.name +
+            //        " in " + driver.carModel + " ride status : " + status);
+            System.out.println(LanguageManager.get("rideStarting",
+                     passenger.name, driver.name, driver.carModel, status.toString()));
         } else {
-            System.out.println("Cannot start ride. Current status: " + status);
+            //System.out.println("Cannot start ride. Current status: " + status);
+            System.out.println(LanguageManager.get("rideNotActive", status.toString()));
         }
     }
 
@@ -77,9 +82,12 @@ public class Ride {
             status = RideStatus.COMPLETED;
             endTime = System.currentTimeMillis();
             double fare = calculateFare();
-            System.out.println("🏁 Ride ended with status " + status + " . Fare for " + passenger.name + " is: $" + fare);
+            //System.out.println("🏁 Ride ended with status " + status + " . Fare for " + passenger.name + " is: $" + fare);
+            System.out.println(LanguageManager.get("rideEnded",
+                     passenger.name, fare));
         } else {
-            System.out.println("❗ Ride is not active. Or Cannot start ride. Current status: " + status);
+            //System.out.println("❗ Ride is not active. Or Cannot start ride. Current status: " + status);
+            System.out.println(LanguageManager.get("rideNotActive", status.toString()));
         }
     }
 
@@ -100,9 +108,11 @@ public class Ride {
             this.status = RideStatus.CANCELLED;
             this.cancelRole = cancelRole;
 
-            System.out.println("Ride with id " + this.id + " has been cancelled ❌");
+            //System.out.println("Ride with id " + this.id + " has been cancelled ❌");
+            System.out.println(LanguageManager.get("rideCancelledBySystem", String.valueOf(this.id)));
         } else {
-            System.out.println("Cannot cancel ride with id " + this.id + " . Current status: " + status);
+            //System.out.println("Cannot cancel ride with id " + this.id + " . Current status: " + status);
+            System.out.println(LanguageManager.get("cannotCancelRideStatus", String.valueOf(this.id), status.toString()));
         }
     }
 

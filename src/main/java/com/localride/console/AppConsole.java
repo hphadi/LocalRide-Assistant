@@ -27,6 +27,7 @@ import com.localride.service.DriverManager;
 import com.localride.service.PassengerManager;
 import com.localride.service.RideManager;
 import com.localride.model.filter.PassengerFilter;
+import com.localride.util.LanguageManager;
 
 import java.util.List;
 import java.util.Scanner;
@@ -100,10 +101,12 @@ public class AppConsole {
                     listRides();
                     break;
                 case 0 :
-                    System.out.println("Thank you to use our Ride application.");
+                    //System.out.println("Thank you to use our Ride application.");
+                    System.out.println(LanguageManager.get("thankYouForUsing"));
                     return;
                 default:
-                    System.out.println("Please select a valid number, try again ...");
+                    //System.out.println("Please select a valid number, try again ...");
+                    System.out.println(LanguageManager.get("selectValidNumber"));
                     break;
             }
         }
@@ -119,17 +122,20 @@ public class AppConsole {
         RideFilter filterForCancellation = new RideFilter(rideStatuses);
         Ride r = rideManager.getRandomRide(filterForCancellation);
         if (r == null) {
-            System.out.println("❗ No REQUESTED ride available to cancel.");
+            //System.out.println("❗ No REQUESTED ride available to cancel.");
+            System.out.println(LanguageManager.get("noRequestedRideToCancel"));
             return;
         }
 
-        System.out.println("Who wants to cancel the ride? (passenger / driver / system)");
+        //System.out.println("Who wants to cancel the ride? (passenger / driver / system)");
+        System.out.println(LanguageManager.get("whoCancels"));
         String input = scanner.nextLine().trim().toLowerCase();
 
         if (input.equals("passenger") || input.equals("driver") || input.equals("system")) {
             rideManager.cancelRide(r, input);
         } else {
-            System.out.println("Invalid option.");
+            //System.out.println("Invalid option.");
+            System.out.println(LanguageManager.get("invalidOption"));
         }
     }
 
@@ -143,20 +149,34 @@ public class AppConsole {
      * </pre>
      */
     private void showMenu() {
-        System.out.println("\n========== Local Ride Assistant ==========");
-        System.out.println("1. Add Passenger");
-        System.out.println("2. Add Driver");
-        System.out.println("3. Request Ride");
-        System.out.println("4. Create Ride");
-        System.out.println("5. Accept Ride");
-        System.out.println("6. Start Ride");
-        System.out.println("7. Cancel Ride");
-        System.out.println("8. End Ride");
-        System.out.println("9. List Passengers");
-        System.out.println("10. List Drivers");
-        System.out.println("11. List Rides");
-        System.out.println("0. Exit");
-        System.out.print("➤ Ple1ase select your choice: ");
+        //System.out.println("\n========== Local Ride Assistant ==========");
+        System.out.println("\n" + LanguageManager.get("title"));
+        //System.out.println("1. Add Passenger");
+        System.out.println("1. " + LanguageManager.get("menu.addPassenger"));
+        //System.out.println("2. Add Driver");
+        System.out.println("2. " + LanguageManager.get("menu.addDriver"));
+        //System.out.println("3. Request Ride");
+        System.out.println("3. " + LanguageManager.get("menu.requestRide"));
+        //System.out.println("4. Create Ride");
+        System.out.println("4. " + LanguageManager.get("menu.createRide"));
+        //System.out.println("5. Accept Ride");
+        System.out.println("5. " + LanguageManager.get("menu.acceptRide"));
+        //System.out.println("6. Start Ride");
+        System.out.println("6. " + LanguageManager.get("menu.startRide"));
+        //System.out.println("7. Cancel Ride");
+        System.out.println("7. " + LanguageManager.get("menu.cancelRide"));
+        //System.out.println("8. End Ride");
+        System.out.println("8. " + LanguageManager.get("menu.endRide"));
+        //System.out.println("9. List Passengers");
+        System.out.println("9. " + LanguageManager.get("menu.listPassengers"));
+        //System.out.println("10. List Drivers");
+        System.out.println("10. " + LanguageManager.get("menu.listDrivers"));
+        //System.out.println("11. List Rides");
+        System.out.println("11. " + LanguageManager.get("menu.listRides"));
+        //System.out.println("0. Exit");
+        System.out.println("0. " + LanguageManager.get("menu.exit"));
+        //System.out.print("➤ Ple1ase select your choice: ");
+        System.out.print("➤ " + LanguageManager.get("selectChoice") );
     }
 
     /**
@@ -186,11 +206,13 @@ public class AppConsole {
      * </pre>
      */
     private void addPassenger() {
-        System.out.print("Enter passenger name: ");
+        //System.out.print("Enter passenger name: ");
+        System.out.print(LanguageManager.get("enterPassengerName"));
         String name = scanner.nextLine();
         Passenger p = new Passenger(name);
         passengerManager.addPassenger(p);
-        System.out.println("✅ Passenger added: " + name + " with id: " + p.getId());
+        //System.out.println("✅ Passenger added: " + name + " with id: " + p.getId());
+        System.out.println(LanguageManager.get("passengerAdded", name, p.getId()));
     }
 
     /**
@@ -201,11 +223,13 @@ public class AppConsole {
      * </pre>
      */
     private void addDriver() {
-        System.out.print("Enter driver name: ");
+        //System.out.print("Enter driver name: ");
+        System.out.print(LanguageManager.get("enterDriverName"));
         String name = scanner.nextLine();
         Driver d = new Driver(name);
         driverManager.addDriver(d);
-        System.out.println("✅ Driver added: " + name + " with id: " + d.getId());
+        //System.out.println("✅ Driver added: " + name + " with id: " + d.getId());
+        System.out.println(LanguageManager.get("driverAdded", name, d.getId()));
     }
     /**
      * <pre>
@@ -217,12 +241,14 @@ public class AppConsole {
         PassengerFilter notrequestedPassengerFilter = new PassengerFilter(PassengerStatus.NOTREQUESTED);
         Passenger p = passengerManager.getRandomPassenger(notrequestedPassengerFilter);
         if (p == null) {
-            System.out.println("❗ There are no Passenger with NOTREQUESTED status.");
+            //System.out.println("❗ There are no Passenger with NOTREQUESTED status.");
+            System.out.println(LanguageManager.get("noPassengerNotRequested"));
             return;
         }
         p.requestRide();
-        System.out.println("Passenger with id " + p.getId() + " and name " + p.getName()
-                +" with rate "+p.getRating()+" a Ride requested.");
+        //System.out.println("Passenger with id " + p.getId() + " and name " + p.getName()
+        //        +" with rate "+p.getRating()+" a Ride requested.");
+        System.out.println(LanguageManager.get("passengerRequested", p.getId(), p.getName(), p.getRating()));
     }
 
 
@@ -237,21 +263,25 @@ public class AppConsole {
         PassengerFilter requestedPassengerFilter = new PassengerFilter(PassengerStatus.REQUESTED);
         Passenger p = passengerManager.getRandomPassenger(requestedPassengerFilter);
         if (p == null) {
-            System.out.println("❗ There are no Passenger with REQUESTED status.");
+            //System.out.println("❗ There are no Passenger with REQUESTED status.");
+            System.out.println(LanguageManager.get("noPassengerRequested"));
             return;
         }
         DriverFilter availableDriverFilter = new DriverFilter(DriverStatus.AVAILABLE);
         Driver d = driverManager.getRandomDriver(availableDriverFilter);
         if( d == null) {
-            System.out.println("❗ There are no Driver with AVAILABLE status.");
+            //System.out.println("❗ There are no Driver with AVAILABLE status.");
+            System.out.println(LanguageManager.get("noDriverAvailable"));
             return;
         }
         if (p == null || d == null) {
-            System.out.println("❗ There are not enough Passenger or Driver .");
+            //System.out.println("❗ There are not enough Passenger or Driver .");
+            System.out.println(LanguageManager.get("notEnoughPassengerOrDriver"));
             return;
         }
         Ride r = rideManager.createRide(p, d);
-        System.out.println("🚗 Ride created: " + r.getId() + " | " + p.getName() + " → " + d.getName());
+        //System.out.println("🚗 Ride created: " + r.getId() + " | " + p.getName() + " → " + d.getName());
+        System.out.println(LanguageManager.get("rideCreated", r.getId(), p.getName(), d.getName()));
     }
 
     /**
@@ -268,10 +298,12 @@ public class AppConsole {
         Ride r = rideManager.getRandomRide(filterForAcceptance);
         if (r != null && ((r.getStatus()== RideStatus.REQUESTED)|| (r.getStatus()== RideStatus.PENDING))) {
             rideManager.acceptRide(r);
-            System.out.println("🚕 Ride build between Passenger: " + r.getPassenger().getName() + " and Driver: "
-                    + r.getDriver().getName() + " (Ride ID: " + r.getId() + ")");
+            //System.out.println("🚕 Ride build between Passenger: " + r.getPassenger().getName() + " and Driver: "
+            //        + r.getDriver().getName() + " (Ride ID: " + r.getId() + ")");
+            System.out.println(LanguageManager.get("rideBuilt", r.getPassenger().getName(), r.getDriver().getName(), r.getId()));
         } else {
-            System.out.println("No Ride available ❗");
+            //System.out.println("No Ride available ❗");
+            System.out.println(LanguageManager.get("noRideAvailable"));
         }
     }
 
@@ -286,7 +318,8 @@ public class AppConsole {
         if (r != null) {
             rideManager.startRide(r);
         } else {
-            System.out.println("No Ride available ❗");
+            //System.out.println("No Ride available ❗");
+            System.out.println(LanguageManager.get("noRideAvailable"));
         }
     }
 
@@ -304,7 +337,8 @@ public class AppConsole {
         if (ride != null) {
             rideManager.endRide(ride);
         } else {
-            System.out.println("No Ride available ❗");
+            //System.out.println("No Ride available ❗");
+            System.out.println(LanguageManager.get("noRideAvailable"));
         }
     }
 
@@ -317,6 +351,7 @@ public class AppConsole {
     private void listRides() {
         for (Ride r : rideManager.getAllRides()) {
             System.out.println("🛣️ " + r);
+
         }
     }
 
