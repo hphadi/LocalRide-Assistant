@@ -1,0 +1,36 @@
+
+.root {
+    -fx-font-family: "Arial";
+    -fx-background-color: #F3F4F6;
+}
+
+.menu-button {
+    -fx-background-color: #1E3A8A;
+    -fx-text-fill: #FFFFFF;
+    -fx-background-radius: 5;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-font-size: 14;
+}
+
+.menu-button:hover {
+    -fx-background-color: #3B82F6;
+}
+
+.menu-button:selected {
+    -fx-background-color: #10B981;
+}
+
+.menu-button:disabled {
+    -fx-opacity: 0.5;
+}
+
+.text-field {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #D1D5DB;
+    -fx-border-radius: 5;
+}
+
+.label {
+    -fx-text-fill: #1E3A8A;
+}
