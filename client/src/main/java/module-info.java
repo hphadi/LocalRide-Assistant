@@ -1,4 +1,4 @@
-module com.localride.demo1 {
+module com.localride.demo{
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.web;
