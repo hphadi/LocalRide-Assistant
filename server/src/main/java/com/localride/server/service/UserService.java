@@ -1,7 +1,7 @@
 package com.localride.server.service;
 
 import com.localride.server.dto.UserRegistrationRequest;
-import com.localride.server.dto.UserResponseDTO;
+import com.localride.server.model.Role; // این را اضافه کنید
 import com.localride.server.model.User;
 import com.localride.server.repository.UserRepository;
 import org.locationtech.jts.io.WKTReader;
@@ -12,12 +12,17 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class UserService {
+    private final UserRepository userRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
+
     @Autowired
-    private UserRepository userRepository;
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = new BCryptPasswordEncoder();
+    }
 
     public User registerUser(UserRegistrationRequest request) {
         if (userRepository.findByUsername(request.getUsername()).isPresent()) {
@@ -26,8 +31,16 @@ public class UserService {
 
         User user = new User();
         user.setUsername(request.getUsername());
-        user.setPasswordHash(new BCryptPasswordEncoder().encode(request.getPassword()));
-        user.setRole(request.getRole());
+        user.setPasswordHash(passwordEncoder.encode(request.getPassword()));
+
+        // اصلاح کلیدی: تبدیل String Role به Role enum
+        if (request.getRole() != null) {
+            user.setRole(Role.valueOf(request.getRole().toUpperCase())); // تبدیل String به Enum
+        } else {
+            // می توانید یک Role پیش فرض بگذارید یا خطا پرتاب کنید
+            user.setRole(Role.PASSENGER); // مثال: Role پیش فرض
+        }
+
         user.setName(request.getName());
         user.setEmail(request.getEmail());
         user.setPhone(request.getPhone());
@@ -45,52 +58,27 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public Optional<UserResponseDTO> getUserById(Long id) {
-        return userRepository.findById(id)
-                .map(user -> {
-                    UserResponseDTO dto = new UserResponseDTO();
-                    dto.setId(user.getId());
-                    dto.setUsername(user.getUsername());
-                    dto.setRole(user.getRole());
-                    dto.setName(user.getName());
-                    dto.setEmail(user.getEmail());
-                    dto.setPhone(user.getPhone());
-                    dto.setCreatedAt(user.getCreatedAt());
-                    if (user.getLocation() != null) {
-                        dto.setLocation("POINT(" + user.getLocation().getX() + " " + user.getLocation().getY() + ")");
-                    }
-                    return dto;
-                });
+    public Optional<User> getUserById(Long id) {
+        return userRepository.findById(id);
     }
 
-    public List<UserResponseDTO> getAllUsers() {
-        return userRepository.findAll()
-                .stream()
-                .map(user -> {
-                    UserResponseDTO dto = new UserResponseDTO();
-                    dto.setId(user.getId());
-                    dto.setUsername(user.getUsername());
-                    dto.setRole(user.getRole());
-                    dto.setName(user.getName());
-                    dto.setEmail(user.getEmail());
-                    dto.setPhone(user.getPhone());
-                    dto.setCreatedAt(user.getCreatedAt());
-                    if (user.getLocation() != null) {
-                        dto.setLocation("POINT(" + user.getLocation().getX() + " " + user.getLocation().getY() + ")");
-                    }
-                    return dto;
-                })
-                .collect(Collectors.toList());
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 
-    public Optional<UserResponseDTO> updateUser(Long id, UserRegistrationRequest request) {
+    public Optional<User> updateUser(Long id, UserRegistrationRequest request) {
         return userRepository.findById(id)
                 .map(user -> {
                     user.setUsername(request.getUsername());
                     if (request.getPassword() != null && !request.getPassword().isEmpty()) {
-                        user.setPasswordHash(new BCryptPasswordEncoder().encode(request.getPassword()));
+                        user.setPasswordHash(passwordEncoder.encode(request.getPassword()));
                     }
-                    user.setRole(request.getRole());
+
+                    // اصلاح کلیدی: تبدیل String Role به Role enum
+                    if (request.getRole() != null) {
+                        user.setRole(Role.valueOf(request.getRole().toUpperCase()));
+                    }
+
                     user.setName(request.getName());
                     user.setEmail(request.getEmail());
                     user.setPhone(request.getPhone());
@@ -107,19 +95,7 @@ public class UserService {
                         user.setLocation(null);
                     }
 
-                    User updatedUser = userRepository.save(user);
-                    UserResponseDTO dto = new UserResponseDTO();
-                    dto.setId(updatedUser.getId());
-                    dto.setUsername(updatedUser.getUsername());
-                    dto.setRole(updatedUser.getRole());
-                    dto.setName(updatedUser.getName());
-                    dto.setEmail(updatedUser.getEmail());
-                    dto.setPhone(updatedUser.getPhone());
-                    dto.setCreatedAt(updatedUser.getCreatedAt());
-                    if (updatedUser.getLocation() != null) {
-                        dto.setLocation("POINT(" + updatedUser.getLocation().getX() + " " + updatedUser.getLocation().getY() + ")");
-                    }
-                    return dto;
+                    return userRepository.save(user);
                 });
     }
 
@@ -129,5 +105,21 @@ public class UserService {
             return true;
         }
         return false;
+    }
+
+    public List<User> getUsersByRole(String role) {
+        return userRepository.findByRole(role);
+    }
+
+    public List<User> findNearbyUsers(Point currentLocation, String targetRole, double radiusInMeters) {
+        if (currentLocation == null) {
+            throw new IllegalArgumentException("Current location cannot be null for nearby user search.");
+        }
+        return userRepository.findNearbyUsers(currentLocation, targetRole, radiusInMeters);
+    }
+
+    public User getUserByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found with username: " + username));
     }
 }

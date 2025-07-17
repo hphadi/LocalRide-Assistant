@@ -6,6 +6,7 @@ public enum Role {
     DRIVER,
     SUPPORT,
     GUEST,
+    USER,
     CASHIER;
 
     public String toUpperCase() {
