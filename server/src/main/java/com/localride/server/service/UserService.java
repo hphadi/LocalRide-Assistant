@@ -1,7 +1,7 @@
 package com.localride.server.service;
 
 import com.localride.server.dto.UserRegistrationRequest;
-import com.localride.server.model.Role; // این را اضافه کنید
+import com.localride.server.model.Role; // Keep this import
 import com.localride.server.model.User;
 import com.localride.server.repository.UserRepository;
 import org.locationtech.jts.io.WKTReader;
@@ -19,9 +19,9 @@ public class UserService {
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) { // Inject passwordEncoder
         this.userRepository = userRepository;
-        this.passwordEncoder = new BCryptPasswordEncoder();
+        this.passwordEncoder = passwordEncoder; // Use injected passwordEncoder
     }
 
     public User registerUser(UserRegistrationRequest request) {
@@ -33,13 +33,15 @@ public class UserService {
         user.setUsername(request.getUsername());
         user.setPasswordHash(passwordEncoder.encode(request.getPassword()));
 
-        // اصلاح کلیدی: تبدیل String Role به Role enum
+        // --- CRITICAL CHANGE HERE FOR ROLE HANDLING ---
         if (request.getRole() != null) {
-            user.setRole(Role.valueOf(request.getRole().toUpperCase())); // تبدیل String به Enum
+            // Directly assign the Role enum from request, no conversion needed
+            user.setRole(request.getRole());
         } else {
-            // می توانید یک Role پیش فرض بگذارید یا خطا پرتاب کنید
-            user.setRole(Role.PASSENGER); // مثال: Role پیش فرض
+            // You can set a default Role or throw an exception if role is mandatory
+            user.setRole(Role.PASSENGER); // Example: Default Role
         }
+        // --- END CRITICAL CHANGE ---
 
         user.setName(request.getName());
         user.setEmail(request.getEmail());
@@ -74,10 +76,12 @@ public class UserService {
                         user.setPasswordHash(passwordEncoder.encode(request.getPassword()));
                     }
 
-                    // اصلاح کلیدی: تبدیل String Role به Role enum
+                    // --- CRITICAL CHANGE HERE FOR ROLE HANDLING ---
                     if (request.getRole() != null) {
-                        user.setRole(Role.valueOf(request.getRole().toUpperCase()));
+                        // Directly assign the Role enum from request, no conversion needed
+                        user.setRole(request.getRole());
                     }
+                    // --- END CRITICAL CHANGE ---
 
                     user.setName(request.getName());
                     user.setEmail(request.getEmail());
@@ -92,7 +96,7 @@ public class UserService {
                             throw new RuntimeException("Invalid location format: " + e.getMessage());
                         }
                     } else {
-                        user.setLocation(null);
+                        user.setLocation(null); // Clear location if null/empty string provided
                     }
 
                     return userRepository.save(user);
@@ -107,6 +111,11 @@ public class UserService {
         return false;
     }
 
+    // IMPORTANT: This method's parameter `role` is a String.
+    // Ensure your UserRepository's findByRole method expects a String or update this logic if needed.
+    // For a consistent approach, it's often better if this also accepts Role enum.
+    // Example: public List<User> getUsersByRole(Role role) { return userRepository.findByRole(role); }
+    // If your UserRepository.findByRole still expects String, make sure it does the conversion.
     public List<User> getUsersByRole(String role) {
         return userRepository.findByRole(role);
     }
@@ -115,6 +124,7 @@ public class UserService {
         if (currentLocation == null) {
             throw new IllegalArgumentException("Current location cannot be null for nearby user search.");
         }
+        // Assuming userRepository.findNearbyUsers expects String for targetRole
         return userRepository.findNearbyUsers(currentLocation, targetRole, radiusInMeters);
     }
 

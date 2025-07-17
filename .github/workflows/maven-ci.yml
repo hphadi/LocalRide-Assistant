@@ -2,27 +2,29 @@ name: Maven CI
 
 on:
   push:
-    branches: [ main, master ] # This workflow runs whenever a push is made to the 'main' or 'master' branches.
+    branches: [ "main", "master" ] # This workflow runs whenever a push is made to the 'main' or 'master' branches.
   pull_request:
-    branches: [ main, master ] # This workflow also runs when a pull request is opened against 'main' or 'master'.
+    branches: [ "main", "master" ] # This workflow also runs when a pull request is opened against 'main' or 'master'.
 
 jobs:
-  build:
+  build-and-test: # Renamed job for clarity
     runs-on: ubuntu-latest # The job will execute on a fresh Ubuntu virtual machine.
 
     steps:
       - uses: actions/checkout@v4 # This action checks out your repository code into the VM.
-      - name: Set up JDK 24 # Sets up the Java Development Kit environment.
+      - name: Set up JDK 21 # Sets up the Java Development Kit environment.
         uses: actions/setup-java@v4
         with:
-          java-version: '24' # Specify your Java version here. Ensure it matches your project's requirement.
+          java-version: '21' # Specify your Java version here. Ensure it matches your project's requirement.
           distribution: 'temurin' # Choose a JDK distribution (e.g., Temurin, Oracle, Adopt).
           cache: maven # Caches Maven dependencies to speed up future builds.
 
-      - name: Build with Maven # Executes the Maven build and test command.
-        run: mvn -B package --file pom.xml
-        working-directory: .
+      - name: Full Project Build and Test # Executes a single Maven command to build and test the entire multi-module project.
+        run: mvn -B clean install # This command will build ALL modules and run ALL tests defined in their respective pom.xml files.
+        working-directory: . # Execute from the root directory where the main pom.xml is located.
         # Command explanation:
         # mvn -B: Runs Maven in batch mode (non-interactive).
-        # package: Compiles, tests, and packages your code (e.g., create a JAR file).
-        # --file pom.xml: Specify the pom.xml file to use for the build.
+        # clean: Cleans the build directory (target folder) for all modules.
+        # install: Compiles, runs tests, packages your code, and installs artifacts into the local Maven repository.
+        #          Because the root pom.xml defines 'server' and 'client' as modules, this command
+        #          will automatically traverse into those directories and build/test them.
