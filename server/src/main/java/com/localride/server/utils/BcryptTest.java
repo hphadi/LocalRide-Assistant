@@ -7,7 +7,10 @@ public class BcryptTest {
     public static void main(String[] args) {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String password = "password123";
-        String hashedPassword = encoder.encode(password);
-        System.out.println(hashedPassword);
+        String hashedPassword = "";
+        System.out.println("hash before:'" + hashedPassword + "'");
+        // Hash the password using BCrypt
+        hashedPassword = encoder.encode(password);
+        System.out.println("hash:'" + hashedPassword + "'");
     }
 }
