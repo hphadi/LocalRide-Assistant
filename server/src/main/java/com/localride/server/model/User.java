@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import org.locationtech.jts.geom.Point;
 import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
+import com.localride.common.model.enums.Role;
 
 @Entity
 @Table(name = "users")

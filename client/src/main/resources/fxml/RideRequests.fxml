@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.VBox?>
+<?import eu.hansolo.tilesfx.Tile?>
+
+<VBox alignment="CENTER" spacing="20.0" style="-fx-background-color: #F3F4F6;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.localride.client.controller.RideRequestsController">
+    <padding>
+        <Insets top="20.0" right="20.0" bottom="20.0" left="20.0"/>
+    </padding>
+    <children>
+        <Tile fx:id="mapTile" prefWidth="600.0" prefHeight="400.0"/>
+    </children>
+</VBox>

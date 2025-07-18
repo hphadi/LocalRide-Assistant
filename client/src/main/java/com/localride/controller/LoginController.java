@@ -1,8 +1,9 @@
 package com.localride.controller;
 
-import com.localride.model.User;
-import com.localride.service.UserManager;
-import com.localride.util.LanguageManager;
+import com.localride.common.model.User;
+import com.localride.client.service.UserManager;
+import com.localride.client.util.LanguageManager;
+import com.localride.common.model.UserResponseDTO;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
@@ -52,12 +53,12 @@ public class LoginController {
             return;
         }
 
-        User user = new User(name, role.equals(bundle.getString("passenger")) ? "Passenger" :
-                role.equals(bundle.getString("driver")) ? "Driver" : "Admin");
-        userManager.addUser(user);
+//        UserResponseDTO user = new UserResponseDTO(name, role.equals(bundle.getString("passenger")) ? "Passenger" :
+//                role.equals(bundle.getString("driver")) ? "Driver" : "Admin");
+//        userManager.addUser(user);
 
-        if (dashboardController != null) {
-            dashboardController.setUser(user);
-        }
+//        if (dashboardController != null) {
+//            dashboardController.setUser(user);
+//        }
     }
 }

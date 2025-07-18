@@ -1,7 +1,7 @@
 package com.localride.server.service;
 
-import com.localride.server.dto.UserRegistrationRequest;
-import com.localride.server.model.Role;
+import com.localride.common.model.UserRegistrationRequest;
+import com.localride.common.model.enums.Role;
 import com.localride.server.model.User;
 import com.localride.server.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;

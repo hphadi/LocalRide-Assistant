@@ -2,13 +2,29 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" spacing="20.0" style="-fx-background-color: #F3F4F6;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<VBox alignment="CENTER" spacing="20.0" style="-fx-background-color: #F3F4F6;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.localride.client.controller.ActiveRidesController">
     <padding>
         <Insets top="20.0" right="20.0" bottom="20.0" left="20.0"/>
     </padding>
     <children>
-        <Label text="Active Rides: Coming soon" style="-fx-font-size: 24; -fx-text-fill: #1E3A8A; -fx-font-weight: bold;"/>
+        <Label text="Active Rides" style="-fx-font-size: 24; -fx-text-fill: #1E3A8A; -fx-font-weight: bold;">
+            <font>
+                <Font name="Arial" size="24.0"/>
+            </font>
+        </Label>
+        <TableView fx:id="ridesTable" prefWidth="500" prefHeight="400">
+            <columns>
+                <TableColumn fx:id="idColumn" text="ID" prefWidth="100" />
+                <TableColumn fx:id="passengerColumn" text="Passenger" prefWidth="150" />
+                <TableColumn fx:id="driverColumn" text="Driver" prefWidth="150" />
+                <TableColumn fx:id="locationColumn" text="Location" prefWidth="100" />
+            </columns>
+        </TableView>
+        <Label fx:id="errorLabel" style="-fx-font-size: 16; -fx-text-fill: red;"/>
     </children>
 </VBox>

@@ -1,7 +1,7 @@
 package com.localride.server.mapper;
 
-import com.localride.server.dto.UserResponseDTO;
-import com.localride.server.model.Role;
+import com.localride.common.model.UserResponseDTO;
+import com.localride.common.model.enums.Role;
 import com.localride.server.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

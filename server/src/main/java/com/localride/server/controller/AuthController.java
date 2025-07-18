@@ -1,7 +1,7 @@
 package com.localride.server.controller;
 
-import com.localride.server.dto.UserRegistrationRequest;
-import com.localride.server.dto.UserResponseDTO;
+import com.localride.common.model.UserRegistrationRequest;
+import com.localride.common.model.UserResponseDTO;
 import com.localride.server.mapper.UserMapper;
 import com.localride.server.model.User;
 import com.localride.server.repository.UserRepository;

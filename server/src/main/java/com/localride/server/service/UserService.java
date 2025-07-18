@@ -1,7 +1,7 @@
 package com.localride.server.service;
 
-import com.localride.server.dto.UserRegistrationRequest;
-import com.localride.server.model.Role; // Keep this import
+import com.localride.common.model.UserRegistrationRequest;
+import com.localride.common.model.enums.Role; // Keep this import
 import com.localride.server.model.User;
 import com.localride.server.repository.UserRepository;
 import org.locationtech.jts.io.WKTReader;

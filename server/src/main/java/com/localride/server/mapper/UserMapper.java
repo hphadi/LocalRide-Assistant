@@ -1,7 +1,7 @@
 package com.localride.server.mapper; // You might need to create a 'mapper' package
 
 import com.localride.server.model.User;
-import com.localride.server.dto.UserResponseDTO;
+import com.localride.common.model.UserResponseDTO;
 import org.locationtech.jts.geom.Point; // Import for Point
 
 import org.springframework.stereotype.Component; // Make it a Spring component

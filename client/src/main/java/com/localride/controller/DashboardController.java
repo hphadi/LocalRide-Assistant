@@ -1,7 +1,9 @@
 package com.localride.controller;
 
-import com.localride.model.User;
-import com.localride.util.LanguageManager;
+import com.localride.client.controller.ProfileController;
+import com.localride.client.util.LanguageManager;
+import com.localride.common.model.User;
+import com.localride.common.model.UserResponseDTO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -24,7 +26,7 @@ public class DashboardController {
     @FXML private Button activeRidesButton;
     @FXML private Button profileButton;
 
-    private User currentUser;
+    private UserResponseDTO currentUser;
     private ResourceBundle bundle;
     private Button selectedButton;
 
@@ -42,7 +44,7 @@ public class DashboardController {
         }
     }
 
-    public void setUser(User user) {
+    public void setUser(UserResponseDTO user) {
         this.currentUser = user;
         if (loginButton != null) {
             loginButton.setText(bundle.getString("logout"));
